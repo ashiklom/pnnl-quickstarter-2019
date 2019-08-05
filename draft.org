@@ -11,9 +11,16 @@ However, the combination of technological limitations and budgetary concerns mea
 For example, NOAA's Deep Space Climate Observatory (DSCOVR) satellite provides imagery of the entire Earth as frequently as every hour, but because the orbit required to achieve this is so far from the Earth, the satellite's effective spatial resolution is relatively poor -- around 24 x 24 square kilometers [1].
 Meanwhile, the much lower orbit of the NASA MODIS-Terra satellite allows it to achieve a spatial resolution as low as 250 x 250 square meters, but with only a daily revisit.
 The NASA/USGS Landsat satellite has the same orbit as MODIS-Terra but a much narrower field of view, so its spatial resolution is even finer -- 30 x 30 square meters -- but the same location is only imaged every 16 days [2].
-
 The relative importance of these instrument criteria varies depending on the research question.
+Detecting large, sudden events like deforestation or volcanic eruptions may require frequent revisit time but relatively low spectral and spatial resolution,
+while remote mapping of coral reef health has the opposite requirements.
 
+Given the effort and expense of designing and launching new remote sensing missions, it is essential that such missions maximize their value to as many stakeholders as possible.
+Therefore, a comprehensive, quantitative cost-benefit analysis of alternative designs is a crucial part of planning such a mission.
+An effective way to perform such an analysis is to simulate the observations made by different candidate mission architectures, and to assess the ability of these simulated observations to meet the needs of different stakeholders.
+Different remote sensing communities (e.g. geology, atmospheric science, terrestrial biogeochemistry) have developed tools and algorithms for analyzing remote senisng observations, and some of these communities have developed models for simulating remote sensing observations.
+Unfortunately, these tools are usually discipline-specific and rarely interoperable, which makes performing the kinds of interdisciplinary analyses described above difficult.
+The objective of this work is to prototype cyberinfrastructure for simulating remote sensing observations and retrieving physical characteristics from such obsevations in a standard way.
 
 [1]: https://epic.gsfc.nasa.gov/about/epic
 [2]: https://landsat.gsfc.nasa.gov/landsat-data-continuity-mission/
@@ -29,7 +36,16 @@ Fundamentally, the remote sensing problem consists of the relationship between t
 (3) atmospheric composition and physical properties;
 (4) surface reflectance; and
 (5) surface characteristics.
-This work will first define standard formats for all of these variables.
+Most remote sensing tasks can be defined as procedures that convert between these variables.
+For example, atmospheric radiative transfer models calculate top-of-atmosphere reflectance (2) given surface reflectance (4) and known atmospheric properties (3),
+while atmospheric correction involves the inverse process of estimating surface reflectance (4) from top-of-atmosphere reflectance (2) and possibly ancillary measurements of atmospheric properties (3).
+Similarly, many remote sensing applications use algorithms that estimate to surface properties such as minerology, tree species composition, or water chemistry (5) from surface reflectance (4),
+while models of surface energy balance do the inverse -- calculating surface reflectance (i.e. albedo; 4) given a set of surface characteristics (5).
+
+Currently, if each such procedure expects inputs and produces outputs in its own format, then a practitioner needs to create a new workflow for every combination of variable formats and procedures.
+In other words, for "n" variable formats and "m" procedures, "n x m"  workflows are required.
+The first objective of this work is to define standards (including file formats, units, and metadata) for each of the formats defined above.
+Such a standard will mean reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will also require only one workflow for converting from the standard.
 
 Fundamentally, this protocol divides the remote sensing problem into three distinct steps:
 (1) Converting from surface characteristics (e.g. plant structure and biochemistry; snow moisture content; mineral composition) to surface reflectance (hemispherical and directional reflectance);
