@@ -18,9 +18,9 @@ while remote mapping of coral reef health has the opposite requirements.
 Given the effort and expense of designing and launching new remote sensing missions, it is essential that such missions maximize their value to as many stakeholders as possible.
 Therefore, a comprehensive, quantitative cost-benefit analysis of alternative designs is a crucial part of planning such a mission.
 An effective way to perform such an analysis is to simulate the observations made by different candidate mission architectures, and to assess the ability of these simulated observations to meet the needs of different stakeholders.
-Different remote sensing communities (e.g. geology, atmospheric science, terrestrial biogeochemistry) have developed tools and algorithms for analyzing remote senisng observations, and some of these communities have developed models for simulating remote sensing observations.
+Different remote sensing communities (e.g. geology, atmospheric science, terrestrial biogeochemistry) have developed tools and algorithms for analyzing remote sensing observations, and some of these communities have developed models for simulating remote sensing observations.
 Unfortunately, these tools are usually discipline-specific and rarely interoperable, which makes performing the kinds of interdisciplinary analyses described above difficult.
-The objective of this work is to prototype cyberinfrastructure for simulating remote sensing observations and retrieving physical characteristics from such obsevations in a standard way.
+The objective of this work is to prototype cyberinfrastructure for simulating remote sensing observations and retrieving physical characteristics from such observations in a standard way.
 
 [1]: https://epic.gsfc.nasa.gov/about/epic
 [2]: https://landsat.gsfc.nasa.gov/landsat-data-continuity-mission/
@@ -31,33 +31,48 @@ The objective of this work is to prototype cyberinfrastructure for simulating re
 
 I will create a standardized protocol for simulating satellite observations associated with different land surface and atmospheric characteristics, and for retrieving these characteristics from real or simulated satellite observations.
 Fundamentally, the remote sensing problem consists of the relationship between the following variables:
-(1) At-sensor radiance (the actual satellite measurement);
-(2) top-of-atmosphere reflectance;
-(3) atmospheric composition and physical properties;
-(4) surface reflectance; and
-(5) surface characteristics.
+
+- (1) At-sensor radiance (the actual satellite measurement);
+- (2) top-of-atmosphere reflectance;
+- (3) atmospheric composition and physical properties;
+- (4) surface reflectance; and
+- (5) surface characteristics.
+
 Most remote sensing tasks can be defined as procedures that convert between these variables.
 For example, atmospheric radiative transfer models calculate top-of-atmosphere reflectance (2) given surface reflectance (4) and known atmospheric properties (3),
 while atmospheric correction involves the inverse process of estimating surface reflectance (4) from top-of-atmosphere reflectance (2) and possibly ancillary measurements of atmospheric properties (3).
-Similarly, many remote sensing applications use algorithms that estimate to surface properties such as minerology, tree species composition, or water chemistry (5) from surface reflectance (4),
+Similarly, many remote sensing applications use algorithms that estimate to surface properties such as mineralogy, tree species composition, or water chemistry (5) from surface reflectance (4),
 while models of surface energy balance do the inverse -- calculating surface reflectance (i.e. albedo; 4) given a set of surface characteristics (5).
 
 Currently, if each such procedure expects inputs and produces outputs in its own format, then a practitioner needs to create a new workflow for every combination of variable formats and procedures.
 In other words, for "n" variable formats and "m" procedures, "n x m"  workflows are required.
 The first objective of this work is to define standards (including file formats, units, and metadata) for each of the formats defined above.
-Such a standard will mean reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will also require only one workflow for converting from the standard.
+Such a standard will mean reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will require only one workflow for converting from the standard.
 
-Fundamentally, this protocol divides the remote sensing problem into three distinct steps:
-(1) Converting from surface characteristics (e.g. plant structure and biochemistry; snow moisture content; mineral composition) to surface reflectance (hemispherical and directional reflectance);
-(2) converting from surface reflectance to top-of-atmosphere reflectance; and
-(3) converting from top-of-atmosphere reflectance to remote sensing observations.
+The second objective of this work is to create a system for specifying and running remote sensing simulations and retrievals using different data sources, models, and algorithms.
+For example, an atmospheric correction of Landsat top-of-atmosphere reflectance would consist of the location and format of the Landsat observations and the atmospheric correction algorithm to use.
+A more complex simulation might start from known physical vegetation characteristics,
+use a canopy radiative transfer model to convert these to surface reflectance,
+use an atmospheric radiative transfer model and a predefined atmosphere to convert this to top-of-atmosphere reflectance,
+use the spectral response functions and other instrument characteristics to convert this to at-sensor radiance,
+add some instrument noise with certain statistical properties,
+and then use a similar retrieval procedure to see how well properties could be retrieved.
+The specification of this approach will take the form of a machine- and human-readable text file (e.g. YAML) defining the data sources and the models or algorithms used.
+The execution of this approach will be powered by Docker, such that each model and algorithm is in its own Docker container with a predefined entry-point with arguments indicating the input and output files.
 
+The final objective of this work is to provide several example real-life applications of this system.
+The main example will focus on simulation of satellite observations of plant canopies and the subsequent retrieval of leaf biochemical properties from these observations.
+Examples will also highlight simulation of instruments with different measurement characteristics, and comparing the efficacy of different simulation and retrieval algorithms.
 
-The protocol will define a small, standard set of formats for spectral data,
 
 *Benefit*
 
 /What are the benefits to the customer, the investor, the enterprise, or the partners? What does it cost them in terms of money, time, and conversion efforts to use your approach? What about the ecosystem: would it support or work against your solution?/
+
+Broadly, this system will facilitate interdisciplinary and collaborative remote sensing science by creating a common platform for simulation and inversion.
+This will also make it easy to robustly compare different remote sensing approaches (e.g. atmospheric correction algorithms) while keeping all other components constant.
+The use of Docker containers dramatically simplifies system installation and maintenance by isolating the software and library requirements of each component.
+The use of a machine-readable plain-text specification allows this system to be embedded into workflows in any programming language.
 
 *Competition* (optional)
 
@@ -65,5 +80,12 @@ The protocol will define a small, standard set of formats for spectral data,
 
 *Success criteria*
 
+In general, success of this project is directly related to how simply and generally it allows different remote sensing analyses to be executed.
+The shorter and simpler the analysis specification file and list of steps for setting up and running the analyses, the more successful the project.
+We will evaluate this success by applying these criteria to the example case studies.
 
 *R&D Proposal DOE Mission Alignment Statement*
+
+Remote sensing is an absolutely essential data source for the earth system modeling activities of the Earth and Biological Sciences Directorate (ASGC).
+This work would provide a direct way for DOE to quantify the value of specific existing and future remote sensing systems to its various projects, which would give more leverage to DOE researchers to pressure NASA and other space agencies to develop and sponsor missions most useful to EBSD objectives.
+By making remote sensing analyses easier, this work would also allow PNNL researchers to more thoroughly leverage remote sensing capabilities without dependence on external collaborators.
