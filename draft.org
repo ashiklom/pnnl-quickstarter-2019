@@ -89,3 +89,7 @@ We will evaluate this success by applying these criteria to the example case stu
 Remote sensing is an absolutely essential data source for the earth system modeling activities of the Earth and Biological Sciences Directorate (ASGC).
 This work would provide a direct way for DOE to quantify the value of specific existing and future remote sensing systems to its various projects, which would give more leverage to DOE researchers to pressure NASA and other space agencies to develop and sponsor missions most useful to EBSD objectives.
 By making remote sensing analyses easier, this work would also allow PNNL researchers to more thoroughly leverage remote sensing capabilities without dependence on external collaborators.
+
+*Goal amount*: $5059 (100 hours)
+
+*Tags*: remote sensing, atmospheric science
