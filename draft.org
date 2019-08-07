@@ -6,9 +6,9 @@ Remote sensing simulation and surface property retrieval system
 
 /What is the important customer or market need? How did you discover the need? What is the pain point for customer or what would delight the customer?/
 
-The ideal remote sensing instrument would observe the entire world, multiple times a day, at very fine spatial resolution, and with hundreds of small wavelength bands across a wide range of the electromagnetic spectrum.
+The ideal remote sensing instrument would observe the entire world, multiple times a day, at fine spatial resolution, and with hundreds of wavelength bands across the electromagnetic spectrum.
 However, technological and financial constraints force remote sensing missions into trade-offs between these various criteria.
-For example, NOAA's Deep Space Climate Observatory (DSCOVR) satellite images the entire Earth as frequently as every hour, but the orbit required to achieve this is very high and therefore the satellite's effective spatial resolution is relatively poor -- around 24 x 24 square kilometers.
+For example, NOAA's Deep Space Climate Observatory (DSCOVR) satellite images the entire Earth almost hourly, but the orbit required to achieve this is very high and therefore the satellite's effective spatial resolution is relatively poor -- around 24 x 24 square kilometers.
 Meanwhile, the much lower orbit of the NASA MODIS-Terra satellite allows it to achieve a spatial resolution as low as 250 x 250 square meters, but with only a daily revisit.
 The NASA/USGS Landsat satellite has the same orbit as MODIS-Terra but a much narrower field of view, so its spatial resolution is even finer -- 30 x 30 square meters -- but the same location is only imaged every 16 days.
 The relative importance of these instrument criteria varies depending on the research question.
@@ -27,6 +27,8 @@ The objective of this work is to prototype cyberinfrastructure for simulating re
 /What is your approach for solving this need? How will your specific approach address what the customer cares about? What makes your approach compelling? Note that the first 150 characters of the approach field will appear in your "discover projects" list entry, so make them count!/
 
 I will create a standardized protocol for simulating satellite observations given different surface and atmospheric characteristics, and for retrieving these characteristics from real or simulated satellite observations.
+This work will leverage my 5 years of experience as a lead developer on a similar system for ecological data and models, the Predictive Ecosystem Analyzer (PEcAn; www.pecanproject.org).
+
 Fundamentally, the remote sensing problem consists of the relationship between the following variables:
 
 - (1) At-sensor radiance (the actual satellite measurement);
@@ -37,14 +39,15 @@ Fundamentally, the remote sensing problem consists of the relationship between t
 
 Most remote sensing tasks can be defined as procedures that convert between these variables.
 For example, atmospheric radiative transfer models calculate top-of-atmosphere reflectance (2) given surface reflectance (4) and known atmospheric properties (3),
-while atmospheric correction involves the inverse process of estimating surface reflectance (4) from top-of-atmosphere reflectance (2) and possibly ancillary measurements of atmospheric properties (3).
+while atmospheric correction estimates surface reflectance (4) from top-of-atmosphere reflectance (2) and ancillary measurements of atmospheric properties (3).
 Similarly, many remote sensing applications use algorithms that estimate to surface properties such as mineralogy, tree species composition, or water chemistry (5) from surface reflectance (4),
 while models of surface energy balance do the opposite -- calculating surface reflectance (i.e. albedo; 4) given a set of surface characteristics (5).
 
-Currently, if each such procedure expects inputs and produces outputs in its own format, then a practitioner needs to create a new workflow for every combination of variable formats and procedures.
-In other words, for "n" variable formats and "m" procedures, "n x m"  workflows are required.
+Robust, efficient implementations of many of these procedures are widely available, so this work will not require developing any such procedures.
+However, these implementations often have their own unique input and output formats, meaning that a practitioner needs to create a new workflow for every combination of variable formats and procedures.
+In other words, "n" variable formats and "m" procedures require "n x m" distinct workflows.
 The first objective of this work is to define standards (including file formats, units, and metadata) for each of the formats defined above.
-Such a standard will mean reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will require only one workflow for converting from the standard.
+Such a standard will reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will require only one workflow for converting from the standard.
 
 The second objective of this work is to create a system for specifying and running remote sensing simulations and retrievals using different data sources, models, and algorithms.
 For example, an atmospheric correction of Landsat top-of-atmosphere reflectance would consist of the location and format of the Landsat observations and the atmospheric correction algorithm to use.
