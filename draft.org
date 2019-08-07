@@ -27,6 +27,7 @@ The objective of this work is to prototype cyberinfrastructure for simulating re
 /What is your approach for solving this need? How will your specific approach address what the customer cares about? What makes your approach compelling? Note that the first 150 characters of the approach field will appear in your "discover projects" list entry, so make them count!/
 
 I will create a standardized protocol for simulating satellite observations given different surface and atmospheric characteristics, and for retrieving these characteristics from real or simulated satellite observations.
+Importantly, the goal is not to develop or implement new remote sensing algorithms, but rather to create a conceptual framework and cyberinfrastructure "glue" for synthesizing existing algorithms and datasets.
 This work will leverage my 5 years of experience as a lead developer on a similar system for ecological data and models, the Predictive Ecosystem Analyzer (PEcAn; www.pecanproject.org).
 
 Fundamentally, the remote sensing problem consists of the relationship between the following variables:
@@ -43,14 +44,14 @@ while atmospheric correction estimates surface reflectance (4) from top-of-atmos
 Similarly, many remote sensing applications use algorithms that estimate to surface properties such as mineralogy, tree species composition, or water chemistry (5) from surface reflectance (4),
 while models of surface energy balance do the opposite -- calculating surface reflectance (i.e. albedo; 4) given a set of surface characteristics (5).
 
-Robust, efficient implementations of many of these procedures are widely available, so this work will not require developing any such procedures.
+Robust, efficient implementations of many of these procedures are widely available, and developing new implementations, algorithms, and/or models is outside the scope of this work.
 However, these implementations often have their own unique input and output formats, meaning that a practitioner needs to create a new workflow for every combination of variable formats and procedures.
 In other words, "n" variable formats and "m" procedures require "n x m" distinct workflows.
 The first objective of this work is to define standards (including file formats, units, and metadata) for each of the formats defined above.
 Such a standard will reduce the number of workflows from "n x m" to "n + m", since each variable format will require only one workflow for converting to the standard, and each model will require only one workflow for converting from the standard.
 
 The second objective of this work is to create a system for specifying and running remote sensing simulations and retrievals using different data sources, models, and algorithms.
-For example, an atmospheric correction of Landsat top-of-atmosphere reflectance would consist of the location and format of the Landsat observations and the atmospheric correction algorithm to use.
+For example, an atmospheric correction of Landsat top-of-atmosphere reflectance would consist only of the location and format of the Landsat observations and the atmospheric correction algorithm to use.
 A more complex simulation might start from known physical vegetation characteristics,
 use a canopy radiative transfer model to convert these to surface reflectance,
 use an atmospheric radiative transfer model and a predefined atmosphere to convert this to top-of-atmosphere reflectance,
@@ -88,9 +89,9 @@ We will evaluate this success by applying these criteria to the example case stu
 
 *R&D Proposal DOE Mission Alignment Statement*
 
-Remote sensing is an essential data source for the earth system modeling activities of the Earth and Biological Sciences Directorate (ASGC).
+Remote sensing is an essential data source for calibration and validation of E3SM specifically, and to the many earth system modeling activities of the Earth and Biological Sciences Directorate more generally.
 This work would provide a direct way for DOE to quantify the value of specific existing and future remote sensing systems to its various projects, which would give more leverage to DOE researchers to pressure NASA and other space agencies to develop and sponsor missions most useful to EBSD objectives.
-By making remote sensing analyses easier, this work would also allow PNNL researchers to more thoroughly leverage remote sensing capabilities without dependence on external collaborators.
+The capabilities enabled by this work would help build PNNL's strength and reputation in remote sensing science.
 
 *Goal amount*: $5059 (100 hours)
 
